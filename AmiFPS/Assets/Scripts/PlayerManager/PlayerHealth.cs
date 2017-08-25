@@ -14,21 +14,59 @@ public class PlayerHealth : MonoBehaviour
 
     private void OnEnable()
     {
-        
+        SetInitialReferences();
+        playerManagerMaster.EventPlayerHealthDeduction += DeductHealth;
+        playerManagerMaster.EventPlayerHealthIncrease += IncreaseHealth;
     }
 
     private void OnDisable()
     {
-        
+        playerManagerMaster.EventPlayerHealthDeduction -= DeductHealth;
+        playerManagerMaster.EventPlayerHealthIncrease -= IncreaseHealth;
     }
 
     void SetInitialReferences()
     {
         gameManagerMaster = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManagerMaster>();
-
+        playerManagerMaster = GetComponent<PlayerManagerMaster>();
     }
 
+    void DeductHealth(int healthChange)
+    {
+        if (gameManagerMaster.isGameOver)
+            return;
 
+        playerHealth -= healthChange;
+        if (playerHealth <= 0)
+        {
+            playerHealth = 0;
+            gameManagerMaster.CallGameOverEvent();
+        }
+        SetUI();
+    }
+
+    void IncreaseHealth(int healthChange)
+    {
+        playerHealth += healthChange;
+        if (playerHealth > maxPlayerHealth)
+        {
+            playerHealth = maxPlayerHealth;
+        }
+        SetUI();
+    }
+
+    void SetUI()
+    {
+        if (healthText != null)
+        {
+            healthText.text = playerHealth.ToString();
+        }
+    }
+
+    void Update()
+    {
+        DeductHealth(1);
+    }
 
 
 }
