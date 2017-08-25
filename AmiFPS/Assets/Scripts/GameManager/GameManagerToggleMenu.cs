@@ -32,7 +32,7 @@ public class GameManagerToggleMenu : MonoBehaviour
 
     void CheckForMenuToggle()
     {
-        if(Input.GetKeyDown(KeyCode.Escape))
+        if(Input.GetKeyDown(KeyCode.Escape) && !gameManagerMaster.isGameOver)
         {
             ToggleMenu();
         }
