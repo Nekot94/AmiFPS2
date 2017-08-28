@@ -65,7 +65,7 @@ public class PlayerHealth : MonoBehaviour
 
     void Update()
     {
-        DeductHealth(1);
+        //DeductHealth(1);
     }
 
 
